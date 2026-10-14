@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breeze Capsules 5in1 — Clean Meets Fun | Official Campaign Website</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'breeze-blue': '#00529C',
+                        'breeze-dark': '#0A192F',
+                        'breeze-cyan': '#00A8E8',
+                        'breeze-pink': '#FF65A3',
+                        'breeze-pink-soft': '#FFD6E7',
+                        'breeze-green': '#10B981',
+                        'breeze-green-light': '#D1FAE5'
+                    },
+                    fontFamily: {
+                        sans: ['Kanit', 'Prompt', 'sans-serif'],
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-12px) rotate(2deg)' },
+                        },
+                        bubbleRise: {
+                            '0%': { transform: 'translateY(100%) scale(0.6)', opacity: '0.2' },
+                            '50%': { opacity: '0.8' },
+                            '100%': { transform: 'translateY(-120%) scale(1.1)', opacity: '0' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(0, 168, 232, 0.4)' },
+                            '50%': { boxShadow: '0 0 30px rgba(255, 101, 163, 0.7)' }
+                        }
+                    },
+                    animation: {
+                        float: 'float 4s ease-in-out infinite',
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 3s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Kanit & Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- React and Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .glass-dark {
+            background: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E2E8F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00529C;
+            border-radius: 4px;
+        }
+
+        /* Bubble generator overlay */
+        .bubble-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(0, 168, 232, 0.4) 60%, rgba(255, 101, 163, 0.6));
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8), 0 4px 15px rgba(0, 168, 232, 0.2);
+            animation: bubbleRise 8s infinite linear;
+        }
+
+        /* Image treatment for logo transparency preservation */
+        .brand-logo {
+            mix-blend-mode: multiply;
+            filter: contrast(1.1);
+        }
+
+        .mascot-shadow {
+            filter: drop-shadow(0 20px 25px rgba(0, 82, 156, 0.25));
+        }
+
+        /* Google Maps custom infowindow styling override */
+        .gm-style .gm-style-iw-c {
+            border-radius: 1.25rem !important;
+            padding: 12px !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
+            font-family: 'Kanit', sans-serif !important;
+        }
+        .gm-style .gm-style-iw-d {
+            overflow: hidden !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Initial dataset for Breeze Booths & Vending Machines with exact coordinates
+        const INITIAL_LOCATIONS = [
+            {
+                id: 'b1',
+                name: 'Breeze Bubble World Siam Paragon',
+                type: 'BOOTH',
+                lat: 13.7460,
+                lng: 100.5348,
+                address: 'ลาน Parc Paragon ชั้น M ศูนย์การค้าสยามพารากอน กรุงเทพฯ',
+                startDate: '2026-10-15',
+                endDate: '2026-10-25',
+                time: '10:00 - 21:00 น.',
+                status: 'ACTIVE',
+                note: 'มีกิจกรรมถ่ายรูปคู่มาสคอต รับฟรี Breeze Capsules 1 ซองเล็ก',
+                isDemo: true,
+                updatedAt: '2026-10-14'
+            },
+            {
+                id: 'b2',
+                name: 'Breeze Clean & Fun CentralWorld',
+                type: 'BOOTH',
+                lat: 13.7469,
+                lng: 100.5391,
+                address: 'โซน Eden ชั้น 1 ศูนย์การค้าเซ็นทรัลเวิลด์ กรุงเทพฯ',
+                startDate: '2026-10-18',
+                endDate: '2026-10-31',
+                time: '10:00 - 22:00 น.',
+                status: 'ACTIVE',
+                note: 'ซุ้มเวิร์กช็อปขจัดคราบหนัก พร้อมแจกคูปองส่วนลด 20 บาท',
+                isDemo: true,
+                updatedAt: '2026-10-14'
+            },
+            {
+                id: 'v1',
+                name: 'ตู้กด Breeze Vending MRT สุขุมวิท',
+                type: 'VENDING',
+                lat: 13.7371,
+                lng: 100.5604,
+                address: 'สถานีรถไฟฟ้า MRT สุขุมวิท บริเวณทางออก 1',
+                startDate: '2026-10-01',
+                endDate: '2026-12-31',
+                time: '06:00 - 23:59 น.',
+                status: 'ACTIVE',
+                note: 'ตู้กดอัตโนมัติรับชำระผ่าน PromptPay และ TrueMoney',
+                isDemo: true,
+                updatedAt: '2026-10-14'
+            },
+            {
+                id: 'v2',
+                name: 'ตู้กด Breeze Vending Mega Bangna',
+                type: 'VENDING',
+                lat: 13.6468,
+                lng: 100.6802,
+                address: 'เมกาบางนา โซน Foodwalk ชั้น G ใกล้ประตูทางเข้า',
+                startDate: '2026-10-10',
+                endDate: '2026-11-30',
+                time: '10:00 - 22:00 น.',
+                status: 'ACTIVE',
+                note: 'ซื้อ 2 แถม 1 เมื่อกดผ่านตู้บริการอัตโนมัติ',
+                isDemo: true,
+                updatedAt: '2026-10-14'
+            },
+            {
+                id: 'b3',
+                name: 'Breeze Pop-up Booth ICONSIAM',
+                type: 'BOOTH',
+                lat: 13.7267,
+                lng: 100.5108,
+                address: 'ชั้น G ริเวอร์ พาร์ค ไอคอนสยาม',
+                startDate: '2026-11-01',
+                endDate: '2026-11-15',
+                time: '11:00 - 21:00 น.',
+                status: 'UPCOMING',
+                note: 'กิจกรรมการแสดงไฟ และฟองสบู่ยักษ์ริมแม่น้ำเจ้าพระยา',
+                isDemo: true,
+                updatedAt: '2026-10-14'
+            }
+        ];
+
+        const App = () => {
+            // Navigation State
+            const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+            // Product Selection Modal State
+            const [selectedProduct, setSelectedProduct] = React.useState(null);
+
+            // Google Maps API Key State (Configurable)
+            const DEFAULT_MAPS_KEY = 'AIzaSyBcDdShehJqX9XvIPwDXKpWPy4GN4AKxxQ';
+            const [googleApiKey, setGoogleApiKey] = React.useState(() => {
+                return localStorage.getItem('breeze_gmaps_api_key') || DEFAULT_MAPS_KEY;
+            });
+            const [isMapLoaded, setIsMapLoaded] = React.useState(false);
+            const [mapLoadError, setMapLoadError] = React.useState(false);
+
+            // Map & Locations State
+            const [locations, setLocations] = React.useState(() => {
+                const saved = localStorage.getItem('breeze_locations');
+                return saved ? JSON.parse(saved) : INITIAL_LOCATIONS;
+            });
+            const [searchQuery, setSearchQuery] = React.useState('');
+            const [filterType, setFilterType] = React.useState('ALL'); // ALL, BOOTH, VENDING, ACTIVE, UPCOMING
+            const [userCoords, setUserCoords] = React.useState(null);
+            const [selectedLocation, setSelectedLocation] = React.useState(null);
+            const [geoError, setGeoError] = React.useState('');
+            const [isLocating, setIsLocating] = React.useState(false);
+
+            // Google Maps Instance References
+            const mapRef = React.useRef(null);
+            const gmapInstanceRef = React.useRef(null);
+            const markersRef = React.useRef([]);
+            const activeInfoWindowRef = React.useRef(null);
+
+            // Admin Panel Toggle
+            const [showAdmin, setShowAdmin] = React.useState(false);
+
+            // Mini Game / Voucher State
+            const [voucherModal, setVoucherModal] = React.useState(false);
+            const [claimedVoucher, setClaimedVoucher] = React.useState(null);
+
+            // Notification Toast
+            const [toastMessage, setToastMessage] = React.useState('');
+
+            const showToast = (msg) => {
+                setToastMessage(msg);
+                setTimeout(() => setToastMessage(''), 3500);
+            };
+
+            // Save locations to LocalStorage
+            React.useEffect(() => {
+                localStorage.setItem('breeze_locations', JSON.stringify(locations));
+            }, [locations]);
+
+            // Save Google Maps API Key
+            const handleSaveApiKey = (key) => {
+                setGoogleApiKey(key);
+                localStorage.setItem('breeze_gmaps_api_key', key);
+                showToast('บันทึก Google Maps API Key เรียบร้อยแล้ว');
+            };
+
+            // Dynamic Script Injection for Google Maps JS API
+            React.useEffect(() => {
+                if (window.google && window.google.maps) {
+                    setIsMapLoaded(true);
+                    setMapLoadError(false);
+                    return;
+                }
+
+                // If key is present, attempt script load
+                if (googleApiKey) {
+                    const scriptId = 'google-maps-js-sdk';
+                    let existingScript = document.getElementById(scriptId);
+
+                    if (existingScript) {
+                        existingScript.remove();
+                    }
+
+                    window.initBreezeGMap = () => {
+                        setIsMapLoaded(true);
+                        setMapLoadError(false);
+                    };
+
+                    const script = document.createElement('script');
+                    script.id = scriptId;
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(googleApiKey)}&callback=initBreezeGMap&libraries=places`;
+                    script.async = true;
+                    script.defer = true;
+                    script.onerror = () => {
+                        setMapLoadError(true);
+                        setIsMapLoaded(false);
+                    };
+
+                    document.head.appendChild(script);
+                } else {
+                    setIsMapLoaded(false);
+                }
+            }, [googleApiKey]);
+
+            // Calculate distance in kilometers using Haversine formula
+            const calculateDistance = (lat1, lon1, lat2, lon2) => {
+                const R = 6371; // Radius of Earth in KM
+                const dLat = (lat2 - lat1) * (Math.PI / 180);
+                const dLon = (lon2 - lon1) * (Math.PI / 180);
+                const a = 
+                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return (R * c).toFixed(1);
+            };
+
+            // Geolocation handler
+            const handleGetCurrentLocation = () => {
+                setIsLocating(true);
+                setGeoError('');
+                if (!navigator.geolocation) {
+                    setGeoError('เบราว์เซอร์ของคุณไม่รองรับการระบุตำแหน่ง GPS');
+                    setIsLocating(false);
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const coords = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        setUserCoords(coords);
+                        setIsLocating(false);
+                        showToast('ระบุตำแหน่งของคุณสำเร็จ! แสดงระยะห่างไปยังตู้กดและบูธ');
+
+                        // Pan Google Map to user location
+                        if (gmapInstanceRef.current && window.google && window.google.maps) {
+                            gmapInstanceRef.current.panTo(coords);
+                            gmapInstanceRef.current.setZoom(14);
+                        }
+                    },
+                    (error) => {
+                        setIsLocating(false);
+                        if (error.code === error.PERMISSION_DENIED) {
+                            setGeoError('โปรดอนุญาตสิทธิ์เข้าถึงตำแหน่งเพื่อค้นหาจุดที่ใกล้คุณที่สุด');
+                        } else {
+                            setGeoError('ไม่สามารถดึงตำแหน่งปัจจุบันได้ กรุณาลองอีกครั้ง');
+                        }
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            };
+
+            // Filtered locations
+            const filteredLocations = React.useMemo(() => {
+                return locations.filter(loc => {
+                    const matchSearch = loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                        loc.address.toLowerCase().includes(searchQuery.toLowerCase());
+                    
+                    let matchFilter = true;
+                    if (filterType === 'BOOTH') matchFilter = loc.type === 'BOOTH';
+                    else if (filterType === 'VENDING') matchFilter = loc.type === 'VENDING';
+                    else if (filterType === 'ACTIVE') matchFilter = loc.status === 'ACTIVE';
+                    else if (filterType === 'UPCOMING') matchFilter = loc.status === 'UPCOMING';
+
+                    return matchSearch && matchFilter;
+                }).map(loc => {
+                    if (userCoords) {
+                        return {
+                            ...loc,
+                            distance: calculateDistance(userCoords.lat, userCoords.lng, loc.lat, loc.lng)
+                        };
+                    }
+                    return loc;
+                }).sort((a, b) => {
+                    if (a.distance && b.distance) {
+                        return parseFloat(a.distance) - parseFloat(b.distance);
+                    }
+                    return 0;
+                });
+            }, [locations, searchQuery, filterType, userCoords]);
+
+            // Google Map initialization and marker syncing
+            React.useEffect(() => {
+                if (!isMapLoaded || !window.google || !window.google.maps || !mapRef.current) return;
+
+                // Create Map Instance if not exists
+                if (!gmapInstanceRef.current) {
+                    const defaultCenter = { lat: 13.7460, lng: 100.5348 }; // Bangkok Center
+                    const mapOptions = {
+                        center: defaultCenter,
+                        zoom: 12,
+                        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
+                        zoomControl: true,
+                        mapTypeControl: false,
+                        streetViewControl: false,
+                        fullscreenControl: true,
+                        gestureHandling: 'greedy',
+                        styles: [
+                            {
+                                "featureType": "water",
+                                "elementType": "geometry",
+                                "stylers": [{ "color": "#e9e9e9" }, { "lightness": 17 }]
+                            },
+                            {
+                                "featureType": "landscape",
+                                "elementType": "geometry",
+                                "stylers": [{ "color": "#f5f5f5" }, { "lightness": 20 }]
+                            }
+                        ]
+                    };
+                    gmapInstanceRef.current = new window.google.maps.Map(mapRef.current, mapOptions);
+                }
+
+                const map = gmapInstanceRef.current;
+
+                // Clear existing markers
+                markersRef.current.forEach(m => m.setMap(null));
+                markersRef.current = [];
+
+                // User Location Marker
+                if (userCoords) {
+                    const userMarker = new window.google.maps.Marker({
+                        position: userCoords,
+                        map: map,
+                        title: 'ตำแหน่งของคุณ',
+                        icon: {
+                            path: window.google.maps.SymbolPath.CIRCLE,
+                            scale: 8,
+                            fillColor: '#00529C',
+                            fillOpacity: 1,
+                            strokeColor: '#FFFFFF',
+                            strokeWeight: 3,
+                        }
+                    });
+                    markersRef.current.push(userMarker);
+                }
+
+                // Add Filtered Markers
+                filteredLocations.forEach(loc => {
+                    const isBooth = loc.type === 'BOOTH';
+                    const markerColor = isBooth ? '#FF65A3' : '#00529C';
+
+                    // SVG Marker Pin
+                    const svgPin = {
+                        path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
+                        fillColor: markerColor,
+                        fillOpacity: 1,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 2,
+                        scale: 1.8,
+                        anchor: new window.google.maps.Point(12, 22)
+                    };
+
+                    const marker = new window.google.maps.Marker({
+                        position: { lat: loc.lat, lng: loc.lng },
+                        map: map,
+                        title: loc.name,
+                        icon: svgPin,
+                        animation: window.google.maps.Animation.DROP
+                    });
+
+                    // InfoWindow Content
+                    const contentString = `
+                        <div style="font-family: 'Kanit', sans-serif; padding: 4px; max-width: 260px;">
+                            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                                <span style="background-color: ${isBooth ? '#FF65A3' : '#00529C'}; color: #FFF; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 12px;">
+                                    ${isBooth ? 'บูธกิจกรรม' : 'ตู้กดสินค้า'}
+                                </span>
+                                ${loc.isDemo ? '<span style="background-color: #FEF3C7; color: #D97706; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; border: 1px solid #FCD34D;">DEMO</span>' : ''}
+                            </div>
+                            <h4 style="font-size: 14px; font-weight: bold; color: #0F172A; margin: 0 0 4px 0;">${loc.name}</h4>
+                            <p style="font-size: 11px; color: #475569; margin: 0 0 8px 0; line-height: 1.4;">${loc.address}</p>
+                            <p style="font-size: 11px; color: #64748B; margin: 0 0 8px 0;"><i class="fa-regular fa-clock"></i> ${loc.time}</p>
+                            ${loc.distance ? `<p style="font-size: 11px; font-weight: bold; color: #00529C; margin: 0 0 8px 0;"><i class="fa-solid fa-location-arrow"></i> ห่างจากคุณ ${loc.distance} กม.</p>` : ''}
+                            <div style="display: flex; gap: 4px; margin-top: 8px;">
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}" target="_blank" rel="noopener noreferrer" style="flex: 1; text-align: center; background-color: #00529C; color: #FFF; font-size: 11px; font-weight: bold; padding: 6px 10px; border-radius: 8px; text-decoration: none;">
+                                    <i class="fa-solid fa-diamond-turn-right"></i> นำทาง Google Maps
+                                </a>
+                            </div>
+                        </div>
+                    `;
+
+                    const infoWindow = new window.google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    marker.addListener('click', () => {
+                        if (activeInfoWindowRef.current) {
+                            activeInfoWindowRef.current.close();
+                        }
+                        infoWindow.open(map, marker);
+                        activeInfoWindowRef.current = infoWindow;
+                        setSelectedLocation(loc);
+                    });
+
+                    markersRef.current.push(marker);
+                });
+
+            }, [isMapLoaded, filteredLocations, userCoords]);
+
+            // Select Location from sidebar
+            const handleSelectLocation = (loc) => {
+                setSelectedLocation(loc);
+                if (gmapInstanceRef.current && window.google && window.google.maps) {
+                    gmapInstanceRef.current.panTo({ lat: loc.lat, lng: loc.lng });
+                    gmapInstanceRef.current.setZoom(15);
+                }
+            };
+
+            const handleResetMapCenter = () => {
+                if (gmapInstanceRef.current && window.google && window.google.maps) {
+                    gmapInstanceRef.current.panTo({ lat: 13.7460, lng: 100.5348 });
+                    gmapInstanceRef.current.setZoom(12);
+                    showToast('รีเซ็ตตำแหน่งแผนที่ไปยังศูนย์กลางกรุงเทพฯ เรียบร้อย');
+                }
+            };
+
+            const handleShareLocation = (loc) => {
+                const shareText = `มาพบกับ Breeze Capsules 5in1 ได้ที่: ${loc.name} (${loc.address})! ดูบน Google Maps: https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}`;
+                
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(shareText);
+                    showToast('คัดลอกข้อความแชร์ตำแหน่งเรียบร้อยแล้ว!');
+                } else {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('คัดลอกข้อความแชร์ตำแหน่งเรียบร้อยแล้ว!');
+                }
+            };
+
+            const handleSpinVoucher = () => {
+                const discounts = [
+                    { code: 'BREEZE20', title: 'ส่วนลด 20 บาท สำหรับ Breeze Capsules ทุกสูตร' },
+                    { code: 'FREE1PK', title: 'รับฟรี! สินค้าตัวอย่าง Breeze Capsule 1 ถุง' },
+                    { code: 'BUY2GET1', title: 'โปรโมชันพิเศษ ซื้อ 2 แถม 1 ที่ตู้ Breeze Vending' }
+                ];
+                const random = discounts[Math.floor(Math.random() * discounts.length)];
+                setClaimedVoucher(random);
+            };
+
+            return (
+                <div class="min-h-screen flex flex-col relative bg-slate-50">
+
+                    {/* Toast Notification */}
+                    {toastMessage && (
+                        <div class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce border border-breeze-cyan">
+                            <i class="fa-solid fa-circle-check text-breeze-cyan text-xl"></i>
+                            <span class="text-sm font-medium">{toastMessage}</span>
+                        </div>
+                    )}
+
+                    {/* Background Bubble Effect */}
+                    <div class="bubble-container">
+                        <div class="bubble w-12 h-12 left-[10%]" style={{ animationDelay: '0s' }}></div>
+                        <div class="bubble w-8 h-8 left-[25%]" style={{ animationDelay: '2s' }}></div>
+                        <div class="bubble w-16 h-16 left-[45%]" style={{ animationDelay: '4s' }}></div>
+                        <div class="bubble w-10 h-10 left-[70%]" style={{ animationDelay: '1s' }}></div>
+                        <div class="bubble w-14 h-14 left-[88%]" style={{ animationDelay: '3s' }}></div>
+                    </div>
+
+                    {/* Header */}
+                    <header class="sticky top-0 z-40 glass-panel shadow-sm border-b border-blue-100 transition-all">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                            
+                            {/* Brand Logo */}
+                            <a href="#home" class="flex items-center gap-3 group">
+                                <img 
+                                    src="image_3e5f7d.png" 
+                                    alt="Breeze Logo" 
+                                    class="h-12 w-auto object-contain brand-logo group-hover:scale-105 transition-transform" 
+                                />
+                                <div class="hidden sm:block">
+                                    <span class="block text-xl font-extrabold text-breeze-blue leading-none">BREEZE</span>
+                                    <span class="text-xs font-semibold tracking-wider text-breeze-pink uppercase">Capsules 5in1</span>
+                                </div>
+                            </a>
+
+                            {/* Desktop Nav Links */}
+                            <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+                                <a href="#home" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-breeze-blue hover:bg-blue-50 transition">หน้าแรก</a>
+                                <a href="#products" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-breeze-blue hover:bg-blue-50 transition">รู้จักสินค้า</a>
+                                <a href="#benefits" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-breeze-blue hover:bg-blue-50 transition">จุดเด่น 5in1</a>
+                                <a href="#map" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-breeze-blue hover:bg-blue-50 transition">แผนที่กิจกรรม</a>
+                                <a href="#where-to-buy" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-breeze-blue hover:bg-blue-50 transition">ช่องทางซื้อ</a>
+                                <a href="#events" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-breeze-blue hover:bg-blue-50 transition">สิทธิพิเศษ</a>
+                                <a href="#faq" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-breeze-blue hover:bg-blue-50 transition">FAQ</a>
+                            </nav>
+
+                            {/* Header Actions */}
+                            <div class="hidden md:flex items-center gap-3">
+                                <button 
+                                    onClick={() => setShowAdmin(!showAdmin)} 
+                                    class="px-4 py-2 rounded-xl text-xs font-semibold border border-breeze-blue text-breeze-blue hover:bg-breeze-blue hover:text-white transition flex items-center gap-1.5"
+                                >
+                                    <i class="fa-solid fa-sliders"></i>
+                                    {showAdmin ? 'ปิดหน้า Admin' : 'Admin Panel'}
+                                </button>
+                                <a 
+                                    href="#map" 
+                                    class="bg-gradient-to-r from-breeze-blue to-breeze-cyan text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-md hover:shadow-lg hover:opacity-95 transition transform hover:-translate-y-0.5"
+                                >
+                                    <i class="fa-solid fa-map-location-dot mr-1.5"></i> ค้นหาตู้กด
+                                </a>
+                            </div>
+
+                            {/* Mobile Hamburger Toggle */}
+                            <button 
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+                                class="md:hidden text-2xl text-breeze-blue p-2 focus:outline-none"
+                                aria-label="Toggle Menu"
+                            >
+                                <i class={`fa-solid ${mobileMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+                            </button>
+                        </div>
+
+                        {/* Mobile Drawer Menu */}
+                        {mobileMenuOpen && (
+                            <div class="md:hidden glass-panel border-t border-slate-200 px-6 py-6 space-y-3 animate-fadeIn">
+                                <a onClick={() => setMobileMenuOpen(false)} href="#home" class="block py-2 text-base font-medium text-slate-800">หน้าแรก</a>
+                                <a onClick={() => setMobileMenuOpen(false)} href="#products" class="block py-2 text-base font-medium text-slate-800">รู้จักสินค้า</a>
+                                <a onClick={() => setMobileMenuOpen(false)} href="#benefits" class="block py-2 text-base font-medium text-slate-800">จุดเด่น 5in1</a>
+                                <a onClick={() => setMobileMenuOpen(false)} href="#map" class="block py-2 text-base font-medium text-slate-800">แผนที่กิจกรรมและตู้กด</a>
+                                <a onClick={() => setMobileMenuOpen(false)} href="#where-to-buy" class="block py-2 text-base font-medium text-slate-800">ช่องทางจำหน่าย</a>
+                                <a onClick={() => setMobileMenuOpen(false)} href="#events" class="block py-2 text-base font-medium text-slate-800">กิจกรรมและสิทธิพิเศษ</a>
+                                <a onClick={() => setMobileMenuOpen(false)} href="#faq" class="block py-2 text-base font-medium text-slate-800">FAQ คำถามที่พบบ่อย</a>
+                                <div class="pt-4 border-t border-slate-200 flex flex-col gap-2">
+                                    <button 
+                                        onClick={() => { setShowAdmin(!showAdmin); setMobileMenuOpen(false); }} 
+                                        class="w-full py-2.5 rounded-xl text-center text-sm font-semibold border border-breeze-blue text-breeze-blue"
+                                    >
+                                        <i class="fa-solid fa-sliders mr-2"></i> {showAdmin ? 'ปิดหน้า Admin' : 'จัดการหมุดแผนที่ (Admin Panel)'}
+                                    </button>
+                                    <a 
+                                        onClick={() => setMobileMenuOpen(false)} 
+                                        href="#map" 
+                                        class="w-full text-center bg-breeze-blue text-white py-3 rounded-xl font-semibold shadow"
+                                    >
+                                        ค้นหาตู้กดใกล้คุณ
+                                    </a>
+                                </div>
+                            </div>
+                        )}
+                    </header>
+
+                    {/* Hero Section */}
+                    <section id="home" class="relative pt-8 pb-20 md:pt-16 md:pb-32 overflow-hidden bg-gradient-to-b from-blue-100/60 via-slate-50 to-white">
+                        <div class="absolute inset-0 opacity-15 pointer-events-none">
+                            <img src="image_3e5efe.jpg" alt="Breeze Hero Artwork Background" class="w-full h-full object-cover blur-sm" />
+                        </div>
+
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100/80 border border-blue-200 text-breeze-blue text-xs md:text-sm font-bold shadow-sm animate-pulse-glow">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-breeze-pink"></span>
+                                        <span>สูตรเข้มข้นพิเศษ — อัปเกรดใหม่ ให้ชีวิตง่ายขึ้น!</span>
+                                    </div>
+
+                                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight">
+                                        CLEAN MEETS FUN <br />
+                                        <span class="bg-gradient-to-r from-breeze-blue via-breeze-cyan to-breeze-pink bg-clip-text text-transparent">
+                                            Breeze Capsules 5in1
+                                        </span>
+                                    </h1>
+
+                                    <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                                        นวัตกรรมแคปซูลซักผ้าแบบ 5in1 รวมพลังขจัดคราบเฉียบขาด กลิ่นหอมสดชื่นยาวนาน 
+                                        ปกป้องผ้า ละลายง่ายในน้ำ ไม่ทิ้งคราบ แค่ 1 แคปซูล สะอาดครบจบในก้อนเดียว
+                                    </p>
+
+                                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                                        <a 
+                                            href="#map" 
+                                            class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-breeze-blue to-breeze-cyan text-white text-base font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center gap-3"
+                                        >
+                                            <i class="fa-solid fa-map-location-dot text-lg"></i>
+                                            <span>ค้นหาบูธและตู้กดสินค้า</span>
+                                        </a>
+
+                                        <a 
+                                            href="#products" 
+                                            class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-slate-200 hover:border-breeze-pink text-slate-800 text-base font-bold shadow-sm hover:shadow-md transition duration-300 flex items-center justify-center gap-2"
+                                        >
+                                            <i class="fa-solid fa-sparkles text-breeze-pink"></i>
+                                            <span>รู้จักสินค้าทั้ง 2 สูตร</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="pt-6 border-t border-slate-200/80 grid grid-cols-3 gap-4 text-center">
+                                        <div class="p-3 rounded-2xl bg-white/80 shadow-sm border border-slate-100">
+                                            <div class="text-breeze-blue font-extrabold text-lg sm:text-2xl">5 in 1</div>
+                                            <div class="text-xs text-slate-500 font-medium">สูตรเข้มข้นพิเศษ</div>
+                                        </div>
+                                        <div class="p-3 rounded-2xl bg-white/80 shadow-sm border border-slate-100">
+                                            <div class="text-breeze-pink font-extrabold text-lg sm:text-2xl">1 แคปซูล</div>
+                                            <div class="text-xs text-slate-500 font-medium">ผ้าสะอาด หอมสดชื่น</div>
+                                        </div>
+                                        <div class="p-3 rounded-2xl bg-white/80 shadow-sm border border-slate-100">
+                                            <div class="text-breeze-green font-extrabold text-lg sm:text-2xl">100%</div>
+                                            <div class="text-xs text-slate-500 font-medium">แคปซูลละลายง่าย</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="lg:col-span-5 relative flex justify-center items-center">
+                                    <div class="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-breeze-cyan/30 to-breeze-pink/30 blur-3xl -z-10 animate-pulse"></div>
+
+                                    <div class="relative z-20 animate-float">
+                                        <img 
+                                            src="image_3e5f37.jpg" 
+                                            alt="Breeze Mascot Clean Meets Fun" 
+                                            class="w-72 sm:w-80 lg:w-96 h-auto object-contain mascot-shadow transition-transform hover:scale-105 duration-300"
+                                        />
+                                        <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-pink-200 text-xs font-bold text-slate-800 flex items-center gap-2 whitespace-nowrap">
+                                            <span class="w-3 h-3 rounded-full bg-breeze-pink animate-ping"></span>
+                                            มาสคอต Breeze ชวนคุณสนุกกับความสะอาด!
+                                        </div>
+                                    </div>
+
+                                    <div class="absolute -top-4 -right-2 sm:top-4 sm:right-4 z-30 bg-white p-2 rounded-2xl shadow-xl border border-blue-100 hidden sm:block animate-float-slow">
+                                        <img src="image_3e5f1a.jpg" alt="Products Preview" class="w-24 h-auto rounded-lg" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Admin Panel */}
+                    {showAdmin && (
+                        <section class="bg-slate-900 text-white py-10 px-4 border-y-4 border-breeze-pink animate-fadeIn">
+                            <div class="max-w-7xl mx-auto">
+                                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-breeze-cyan flex items-center gap-2">
+                                            <i class="fa-solid fa-gears"></i> Admin Panel — ระบบจัดการตำแหน่งและ Google Maps API Key
+                                        </h3>
+                                        <p class="text-xs text-slate-400 mt-1">
+                                            ข้อมูลหมุดและ API Key บันทึกใน LocalStorage ของเบราว์เซอร์สำหรับทดลองใช้งาน
+                                        </p>
+                                    </div>
+                                    <button 
+                                        onClick={() => setLocations(INITIAL_LOCATIONS)} 
+                                        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg text-slate-300 transition"
+                                    >
+                                        <i class="fa-solid fa-rotate-left mr-1"></i> รีเซ็ตตำแหน่งเป็นค่าเริ่มต้น
+                                    </button>
+                                </div>
+
+                                {/* API Key Settings Bar */}
+                                <div class="mb-6 p-4 bg-slate-800 rounded-2xl border border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4">
+                                    <div class="flex items-center gap-3 w-full md:w-auto">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-breeze-cyan flex items-center justify-center text-lg">
+                                            <i class="fa-solid fa-key"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-white">Google Maps API Key Configuration</h4>
+                                            <p class="text-xs text-slate-400">ใส่ API Key ของคุณเพื่อเริ่มใช้งาน Google Maps JS API ฉบับเต็ม</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 w-full md:w-1/2">
+                                        <input 
+                                            type="text" 
+                                            value={googleApiKey}
+                                            onChange={(e) => setGoogleApiKey(e.target.value)}
+                                            placeholder="ใส่ YOUR_GOOGLE_MAPS_API_KEY..." 
+                                            class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-breeze-cyan outline-none"
+                                        />
+                                        <button 
+                                            onClick={() => handleSaveApiKey(googleApiKey)}
+                                            class="bg-breeze-blue hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-xl text-xs whitespace-nowrap transition"
+                                        >
+                                            บันทึก Key
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Form Add Location */}
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const form = e.target;
+                                    const newLoc = {
+                                        id: 'custom_' + Date.now(),
+                                        name: form.locName.value,
+                                        type: form.locType.value,
+                                        lat: parseFloat(form.locLat.value),
+                                        lng: parseFloat(form.locLng.value),
+                                        address: form.locAddress.value,
+                                        startDate: form.locStartDate.value || '2026-10-14',
+                                        endDate: form.locEndDate.value || '2026-12-31',
+                                        time: form.locTime.value || '10:00 - 22:00 น.',
+                                        status: form.locStatus.value,
+                                        note: form.locNote.value || 'ข้อมูลกิจกรรมเพิ่มเติม',
+                                        isDemo: false,
+                                        updatedAt: new Date().toISOString().split('T')[0]
+                                    };
+                                    setLocations([newLoc, ...locations]);
+                                    form.reset();
+                                    showToast('เพิ่มตำแหน่งใหม่บน Google Maps เรียบร้อยแล้ว!');
+                                }} class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 bg-slate-800/80 p-5 rounded-2xl border border-slate-700">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">ชื่อสถานที่ / บูธ</label>
+                                        <input name="locName" required type="text" placeholder="เช่น บูธ Breeze สยามพารากอน" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">ประเภท</label>
+                                        <select name="locType" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                                            <option value="BOOTH">BOOTH (บูธกิจกรรม)</option>
+                                            <option value="VENDING">VENDING (ตู้กดสินค้า)</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">Latitude</label>
+                                        <input name="locLat" required type="number" step="any" placeholder="13.7460" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">Longitude</label>
+                                        <input name="locLng" required type="number" step="any" placeholder="100.5348" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white" />
+                                    </div>
+
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">ที่อยู่รายละเอียด</label>
+                                        <input name="locAddress" required type="text" placeholder="โซน Eden ชั้น 1 ศูนย์การค้าเซ็นทรัลเวิลด์" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">สถานะ</label>
+                                        <select name="locStatus" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                                            <option value="ACTIVE">ACTIVE (กำลังจัดงาน)</option>
+                                            <option value="UPCOMING">UPCOMING (เร็วๆ นี้)</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">เวลาให้บริการ</label>
+                                        <input name="locTime" type="text" placeholder="10:00 - 22:00 น." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white" />
+                                    </div>
+
+                                    <div class="md:col-span-3">
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">หมายเหตุเพิ่มเติม</label>
+                                        <input name="locNote" type="text" placeholder="มีของแถมทดลองซักฟรี" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white" />
+                                    </div>
+
+                                    <div class="flex items-end">
+                                        <button type="submit" class="w-full bg-breeze-pink hover:bg-pink-600 text-white font-bold py-2 rounded-lg text-xs transition">
+                                            <i class="fa-solid fa-plus mr-1"></i> เพิ่มตำแหน่ง
+                                        </button>
+                                    </div>
+                                </form>
+
+                                {/* Location Table Management */}
+                                <div class="overflow-x-auto bg-slate-800 rounded-xl border border-slate-700">
+                                    <table class="w-full text-left text-xs text-slate-300">
+                                        <thead class="bg-slate-900 text-slate-400 uppercase text-[10px]">
+                                            <tr>
+                                                <th class="p-3">ประเภท</th>
+                                                <th class="p-3">ชื่อสถานที่</th>
+                                                <th class="p-3">พิกัด (Lat, Lng)</th>
+                                                <th class="p-3">สถานะ</th>
+                                                <th class="p-3">ประเภทข้อมูล</th>
+                                                <th class="p-3 text-right">การจัดการ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-700">
+                                            {locations.map((loc) => (
+                                                <tr key={loc.id} class="hover:bg-slate-750">
+                                                    <td class="p-3 font-semibold text-white">
+                                                        <span class={`px-2 py-0.5 rounded ${loc.type === 'BOOTH' ? 'bg-breeze-pink/20 text-breeze-pink' : 'bg-breeze-blue/20 text-breeze-cyan'}`}>
+                                                            {loc.type}
+                                                        </span>
+                                                    </td>
+                                                    <td class="p-3 font-medium text-white">{loc.name}</td>
+                                                    <td class="p-3 text-slate-400">{loc.lat.toFixed(4)}, {loc.lng.toFixed(4)}</td>
+                                                    <td class="p-3">
+                                                        <span class={`px-2 py-0.5 rounded text-[10px] ${loc.status === 'ACTIVE' ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                                                            {loc.status}
+                                                        </span>
+                                                    </td>
+                                                    <td class="p-3">
+                                                        {loc.isDemo ? (
+                                                            <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 text-[10px] font-bold border border-amber-500/30">
+                                                                DEMO DATA
+                                                            </span>
+                                                        ) : (
+                                                            <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 text-[10px] font-bold border border-blue-500/30">
+                                                                USER CREATED
+                                                            </span>
+                                                        )}
+                                                    </td>
+                                                    <td class="p-3 text-right">
+                                                        <button 
+                                                            onClick={() => {
+                                                                setLocations(locations.filter(l => l.id !== loc.id));
+                                                                showToast('ลบรายการสถานที่เรียบร้อยแล้ว');
+                                                            }}
+                                                            class="text-red-400 hover:text-red-300 font-semibold px-2 py-1 rounded bg-red-500/10 hover:bg-red-500/20"
+                                                        >
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </section>
+                    )}
+
+                    {/* Products Showcase */}
+                    <section id="products" class="py-20 bg-white">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                                <span class="text-xs font-bold text-breeze-pink tracking-widest uppercase bg-pink-50 px-4 py-1.5 rounded-full border border-pink-100">
+                                    PRODUCT LINEUP
+                                </span>
+                                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                                    แนะนำผลิตภัณฑ์ Breeze Capsules ทั้ง 2 สูตร
+                                </h2>
+                                <p class="text-slate-600 text-base">
+                                    สัมผัสประสบการณ์ซักผ้าใหม่ที่ทั้งคลีนและสนุก ด้วยรูปทรงแคปซูล 3 หัวใจเข้มข้น สะอาดลึก หอมยาวนาน
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+                                <div class="bg-gradient-to-b from-pink-50/50 to-white rounded-3xl p-6 sm:p-8 border border-pink-100 shadow-lg hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                                    <div>
+                                        <div class="relative overflow-hidden rounded-2xl bg-white p-4 shadow-inner mb-6 flex justify-center items-center">
+                                            <img 
+                                                src="image_3e5f1a.jpg" 
+                                                alt="Breeze Capsule Clean & Fresh" 
+                                                class="h-64 sm:h-72 object-contain group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                            <span class="absolute top-3 left-3 bg-breeze-pink text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                                                สูตรคลีน แอนด์ เฟรช
+                                            </span>
+                                        </div>
+
+                                        <h3 class="text-2xl font-bold text-slate-900 mb-2">
+                                            บรีส แคปซูล คลีน & เฟรช พลัส+
+                                        </h3>
+                                        <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                                            สูตรเข้มข้นพิเศษ ถุงสีชมพู มอบกลิ่นหอมดอกไม้สดชื่นยาวนาน เพิ่มสุนทรียภาพในการซักผ้า ขจัดคราบหนักได้สะอาดล้ำลึก ให้ผ้าหอมละมุนตราบเท่าที่สวมใส่
+                                        </p>
+
+                                        <ul class="space-y-2 mb-6 text-sm text-slate-700">
+                                            <li class="flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-check text-breeze-pink"></i>
+                                                <span>กลิ่นหอมดอกไม้สดชื่นยาวนาน</span>
+                                            </li>
+                                            <li class="flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-check text-breeze-pink"></i>
+                                                <span>ขจัดคราบหนักเฉียบขาดโดยไม่ต้องแปรง</span>
+                                            </li>
+                                            <li class="flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-check text-breeze-pink"></i>
+                                                <span>ถนอมใยผ้า คงความสดใสของสีผ้า</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <button 
+                                        onClick={() => setSelectedProduct({
+                                            title: 'บรีส แคปซูล คลีน & เฟรช พลัส+',
+                                            color: 'breeze-pink',
+                                            bg: 'bg-pink-500',
+                                            desc: 'สูตรกลิ่นหอมดอกไม้สดชื่น สำหรับผู้ที่ชื่นชอบผ้าหอมละมุนยาวนาน ขจัดคราบหนักได้อย่างหมดจด',
+                                            usage: 'ใส่แคปซูลลงในถังซักเป็นอันดับแรก ก่อนใส่เสื้อผ้า (1 แคปซูล สำหรับผ้า 15-28 ชิ้น)',
+                                            specs: 'บรรจุ 18 แคปซูล / ถุง',
+                                            img: 'image_3e5f1a.jpg'
+                                        })}
+                                        class="w-full py-3 bg-breeze-pink hover:bg-pink-600 text-white font-bold rounded-2xl shadow transition flex items-center justify-center gap-2"
+                                    >
+                                        <span>ดูรายละเอียดสูตรนี้</span>
+                                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                                    </button>
+                                </div>
+
+                                <div class="bg-gradient-to-b from-blue-50/50 to-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-lg hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+                                    <div>
+                                        <div class="relative overflow-hidden rounded-2xl bg-white p-4 shadow-inner mb-6 flex justify-center items-center">
+                                            <img 
+                                                src="image_3e5f1a.jpg" 
+                                                alt="Breeze Capsule Clean & Hygiene" 
+                                                class="h-64 sm:h-72 object-contain group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                            <span class="absolute top-3 left-3 bg-breeze-blue text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                                                สูตรคลีน แอนด์ ไฮยีน
+                                            </span>
+                                        </div>
+
+                                        <h3 class="text-2xl font-bold text-slate-900 mb-2">
+                                            บรีส แคปซูล คลีน & ไฮยีน พลัส+
+                                        </h3>
+                                        <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                                            สูตรเข้มข้นพิเศษ ถุงสีฟ้า/เขียว เน้นการลดกลิ่นอับ ให้ความรู้สึกหอมสะอาดบริสุทธิ์ ขจัดคราบฝังแน่น และปกป้องผ้าจากเชื้อแบคทีเรียได้อย่างมีประสิทธิภาพ
+                                        </p>
+
+                                        <ul class="space-y-2 mb-6 text-sm text-slate-700">
+                                            <li class="flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-check text-breeze-blue"></i>
+                                                <span>ลดกลิ่นอับอย่างมีประสิทธิภาพ แม้ตากในที่ร่ม</span>
+                                            </li>
+                                            <li class="flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-check text-breeze-blue"></i>
+                                                <span>ทำความสะอาดล้ำลึก ขจัดคราบและสิ่งสกปรก</span>
+                                            </li>
+                                            <li class="flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-check text-breeze-blue"></i>
+                                                <span>ฟิล์มแคปซูลละลายน้ำง่าย ไม่ทิ้งสารตกค้าง</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <button 
+                                        onClick={() => setSelectedProduct({
+                                            title: 'บรีส แคปซูล คลีน & ไฮยีน พลัส+',
+                                            color: 'breeze-blue',
+                                            bg: 'bg-breeze-blue',
+                                            desc: 'สูตรปกป้องกลิ่นอับ มอบความสะอาดหอมสดชื่น เหมาะสำหรับผ้าตากในที่ร่ม หรือต้องการความสะอาดถูกสุขอนามัยขั้นสุด',
+                                            usage: 'ใส่แคปซูลลงในถังซักเป็นอันดับแรก ก่อนใส่เสื้อผ้า (1 แคปซูล สำหรับผ้า 15-28 ชิ้น)',
+                                            specs: 'บรรจุ 18 แคปซูล / ถุง',
+                                            img: 'image_3e5f1a.jpg'
+                                        })}
+                                        class="w-full py-3 bg-breeze-blue hover:bg-blue-700 text-white font-bold rounded-2xl shadow transition flex items-center justify-center gap-2"
+                                    >
+                                        <span>ดูรายละเอียดสูตรนี้</span>
+                                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Product Detail Modal */}
+                    {selectedProduct && (
+                        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+                            <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100">
+                                <button 
+                                    onClick={() => setSelectedProduct(null)} 
+                                    class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-lg"
+                                >
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+
+                                <div class="text-center mb-6">
+                                    <span class={`inline-block text-white text-xs font-bold px-3 py-1 rounded-full ${selectedProduct.bg} mb-3`}>
+                                        {selectedProduct.title}
+                                    </span>
+                                    <img src={selectedProduct.img} alt="Product Detail" class="h-48 mx-auto object-contain my-2" />
+                                </div>
+
+                                <div class="space-y-4 text-left mb-6">
+                                    <div>
+                                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">รายละเอียด</h4>
+                                        <p class="text-sm text-slate-700 font-medium">{selectedProduct.desc}</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">วิธีใช้งาน</h4>
+                                        <p class="text-sm text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                                            <i class="fa-solid fa-circle-info text-breeze-blue mr-2"></i>
+                                            {selectedProduct.usage}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">ขนาดบรรจุ</h4>
+                                        <p class="text-sm font-semibold text-slate-800">{selectedProduct.specs}</p>
+                                    </div>
+                                </div>
+
+                                <button 
+                                    onClick={() => setSelectedProduct(null)} 
+                                    class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl shadow transition"
+                                >
+                                    ตกลง / ปิดหน้าต่าง
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Product Benefits */}
+                    <section id="benefits" class="py-20 bg-slate-100/70 relative overflow-hidden">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                                <span class="text-xs font-bold text-breeze-blue tracking-widest uppercase bg-blue-50 px-4 py-1.5 rounded-full border border-blue-200">
+                                    5 IN 1 ADVANTAGES
+                                </span>
+                                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                                    5 คุณประโยชน์ใน 1 แคปซูล
+                                </h2>
+                                <p class="text-slate-600 text-base">
+                                    รวมพลังความสะอาดและเทคโนโลยีถนอมผ้าชั้นเยี่ยม ให้การซักผ้าเป็นเรื่องง่ายและทรงประสิทธิภาพ
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                                <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-200/80 flex flex-col items-center text-center group">
+                                    <div class="w-16 h-16 rounded-2xl bg-blue-50 text-breeze-blue flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 text-base mb-2">ขจัดคราบเฉียบขาด</h3>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        สลายคราบฝังลึกและสิ่งสกปรกหนักได้อย่างง่ายดายโดยไม่ต้องแปรงผ้า
+                                    </p>
+                                </div>
+
+                                <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-200/80 flex flex-col items-center text-center group">
+                                    <div class="w-16 h-16 rounded-2xl bg-pink-50 text-breeze-pink flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-shield-virus"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 text-base mb-2">ลดกลิ่นอับ หอมสดชื่น</h3>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        ยับยั้งกลิ่นอับชื้นแม้ตากผ้าในที่ร่ม ให้ผ้าหอมสะอาดสดชื่นมั่นใจ
+                                    </p>
+                                </div>
+
+                                <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-200/80 flex flex-col items-center text-center group">
+                                    <div class="w-16 h-16 rounded-2xl bg-cyan-50 text-breeze-cyan flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-wind"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 text-base mb-2">กลิ่นหอมยาวนาน</h3>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        กระจายกลิ่นหอมต่อเนื่องตลอดวัน ให้ผ้าหอมละมุนน่าสวมใส่
+                                    </p>
+                                </div>
+
+                                <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-200/80 flex flex-col items-center text-center group">
+                                    <div class="w-16 h-16 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-shirt"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 text-base mb-2">ปกป้องสีและใยผ้า*</h3>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        ถนอมเส้นใยผ้าให้สดใส ไม่ซีดจาง แม้ผ่านการซักซ้ำหลายครั้ง
+                                    </p>
+                                </div>
+
+                                <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-200/80 flex flex-col items-center text-center group">
+                                    <div class="w-16 h-16 rounded-2xl bg-emerald-50 text-breeze-green flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-droplet"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 text-base mb-2">แคปซูลละลายง่าย</h3>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        ฟิล์มบางละลายน้ำได้อย่างรวดเร็ว ไร้สารตกค้างเกาะติดเสื้อผ้า
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p class="text-center text-[11px] text-slate-400 mt-8">
+                                *ผลทดสอบในห้องปฏิบัติการหลังซัก 10 ครั้ง กับผ้าโพลีคอตตอน พ.ศ. 2565
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* Google Maps Interactive Section */}
+                    <section id="map" class="py-20 bg-white relative">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            
+                            {/* Section Header */}
+                            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                                <div>
+                                    <span class="text-xs font-bold text-breeze-pink tracking-widest uppercase bg-pink-50 px-4 py-1.5 rounded-full border border-pink-100">
+                                        OFFICIAL GOOGLE MAPS
+                                    </span>
+                                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">
+                                        ตามหาบูธกิจกรรมและตู้กดสินค้าใกล้คุณ
+                                    </h2>
+                                    <p class="text-slate-600 text-sm mt-1">
+                                        ระบบ Google Maps แท้จริง แสดงพิกัดภูมิศาสตร์ ชื่อถนน และสถานที่จริง พร้อมหมุดกิจกรรม Breeze
+                                    </p>
+                                </div>
+
+                                {/* Map Action Buttons */}
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button 
+                                        onClick={handleResetMapCenter}
+                                        class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-3 rounded-2xl transition text-xs flex items-center gap-1.5"
+                                        title="กลับสู่ศูนย์กลางแผนที่"
+                                    >
+                                        <i class="fa-solid fa-crosshairs"></i>
+                                        <span>รีเซ็ตศูนย์กลาง</span>
+                                    </button>
+
+                                    <button 
+                                        onClick={handleGetCurrentLocation}
+                                        disabled={isLocating}
+                                        class="bg-gradient-to-r from-breeze-blue to-breeze-cyan hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-5 py-3 rounded-2xl shadow-md transition flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                                    >
+                                        <i class={`fa-solid ${isLocating ? 'fa-spinner fa-spin' : 'fa-location-crosshairs'} text-base`}></i>
+                                        <span>{isLocating ? 'กำลังค้นหาตำแหน่ง...' : 'ค้นหาจุดใกล้ฉัน (GPS)'}</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {geoError && (
+                                <div class="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center gap-2">
+                                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base"></i>
+                                    <span>{geoError}</span>
+                                </div>
+                            )}
+
+                            {/* Search and Filter Toolbar */}
+                            <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 mb-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                                
+                                {/* Search Box */}
+                                <div class="md:col-span-6 relative">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                                    <input 
+                                        type="text" 
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="ค้นหาชื่อสถานที่ ย่าน เขต หรือจังหวัด..."
+                                        class="w-full bg-white border border-slate-200 rounded-2xl pl-11 pr-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-breeze-blue shadow-sm"
+                                    />
+                                    {searchQuery && (
+                                        <button onClick={() => setSearchQuery('')} class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Filter Category Buttons */}
+                                <div class="md:col-span-6 flex flex-wrap gap-2 justify-start md:justify-end">
+                                    <button 
+                                        onClick={() => setFilterType('ALL')}
+                                        class={`px-3 py-2 rounded-xl text-xs font-semibold transition ${filterType === 'ALL' ? 'bg-breeze-blue text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-100'}`}
+                                    >
+                                        ทั้งหมด ({locations.length})
+                                    </button>
+                                    <button 
+                                        onClick={() => setFilterType('BOOTH')}
+                                        class={`px-3 py-2 rounded-xl text-xs font-semibold transition ${filterType === 'BOOTH' ? 'bg-breeze-pink text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-100'}`}
+                                    >
+                                        <i class="fa-solid fa-store mr-1"></i> บูธกิจกรรม
+                                    </button>
+                                    <button 
+                                        onClick={() => setFilterType('VENDING')}
+                                        class={`px-3 py-2 rounded-xl text-xs font-semibold transition ${filterType === 'VENDING' ? 'bg-breeze-blue text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-100'}`}
+                                    >
+                                        <i class="fa-solid fa-cash-register mr-1"></i> ตู้กดสินค้า
+                                    </button>
+                                    <button 
+                                        onClick={() => setFilterType('ACTIVE')}
+                                        class={`px-3 py-2 rounded-xl text-xs font-semibold transition ${filterType === 'ACTIVE' ? 'bg-emerald-600 text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-100'}`}
+                                    >
+                                        กำลังดำเนินอยู่
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Map Container & Sidebar List */}
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                                
+                                {/* Google Map Canvas Container */}
+                                <div class="lg:col-span-7 bg-slate-100 rounded-3xl overflow-hidden border border-slate-200 shadow-lg h-[480px] lg:h-[620px] relative flex flex-col">
+                                    
+                                    {/* Google Maps JS API Canvas */}
+                                    {isMapLoaded ? (
+                                        <div ref={mapRef} class="w-full h-full z-10"></div>
+                                    ) : (
+                                        /* Fallback & API Key Prompt Screen */
+                                        <div class="w-full h-full flex flex-col justify-between p-4 relative bg-slate-900 text-white overflow-hidden">
+                                            
+                                            {/* Live Google Maps Embed Iframe Fallback */}
+                                            <div class="absolute inset-0 z-0 opacity-40">
+                                                <iframe 
+                                                    width="100%" 
+                                                    height="100%" 
+                                                    style={{ border: 0 }}
+                                                    loading="lazy"
+                                                    allowFullScreen
+                                                    src="https://maps.google.com/maps?q=13.7460,100.5348&z=13&output=embed"
+                                                ></iframe>
+                                            </div>
+
+                                            {/* Interactive Overlay Badge */}
+                                            <div class="relative z-10 bg-slate-950/80 backdrop-blur-md p-5 rounded-2xl border border-white/10 max-w-lg mx-auto my-auto text-center space-y-3">
+                                                <div class="w-12 h-12 rounded-2xl bg-breeze-blue/30 text-breeze-cyan flex items-center justify-center mx-auto text-2xl border border-breeze-cyan/40">
+                                                    <i class="fa-solid fa-map-location-dot"></i>
+                                                </div>
+                                                <h3 class="text-base font-bold text-white">Google Maps Interactive Mode</h3>
+                                                <p class="text-xs text-slate-300 leading-relaxed">
+                                                    แสดงผลผ่าน Google Maps Embed พร้อมใช้งาน สำหรับการเปิดใช้งาน Google Maps JS API ในระบบแบบกำหนดเอง ให้ระบุ API Key
+                                                </p>
+                                                
+                                                <div class="pt-2 flex flex-col sm:flex-row gap-2 justify-center">
+                                                    <button 
+                                                        onClick={() => setShowAdmin(true)}
+                                                        class="px-4 py-2 bg-breeze-pink hover:bg-pink-600 text-white font-bold rounded-xl text-xs transition"
+                                                    >
+                                                        <i class="fa-solid fa-key mr-1.5"></i> ตั้งค่า Google Maps API Key
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="relative z-10 flex items-center justify-between text-[11px] text-slate-400 bg-slate-900/90 p-2.5 rounded-xl border border-slate-800">
+                                                <span><i class="fa-brands fa-google mr-1 text-blue-400"></i> Google Maps Platform</span>
+                                                <span class="text-amber-400 font-bold">DEMO MODE — พิกัดและนำทางใช้ได้จริง</span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Google Maps Header Banner Overlay */}
+                                    <div class="absolute top-3 left-3 z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow border border-slate-200 text-[11px] font-semibold text-slate-700 flex items-center gap-2">
+                                        <i class="fa-brands fa-google text-blue-600"></i>
+                                        <span>Google Maps Real Location Engine</span>
+                                    </div>
+                                </div>
+
+                                {/* Location Cards Sidebar List */}
+                                <div class="lg:col-span-5 space-y-4 max-h-[620px] overflow-y-auto pr-1">
+                                    {filteredLocations.length === 0 ? (
+                                        <div class="p-8 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-300">
+                                            <i class="fa-solid fa-map-location-dot text-4xl text-slate-300 mb-3"></i>
+                                            <h4 class="font-bold text-slate-700 text-base">ไม่พบสถานที่ที่ค้นหา</h4>
+                                            <p class="text-xs text-slate-500 mt-1">ลองเปลี่ยนคำค้นหาหรือเลือกตัวกรองประเภทอื่น</p>
+                                        </div>
+                                    ) : (
+                                        filteredLocations.map((loc) => {
+                                            const isSelected = selectedLocation && selectedLocation.id === loc.id;
+                                            return (
+                                                <div 
+                                                    key={loc.id}
+                                                    onClick={() => handleSelectLocation(loc)}
+                                                    class={`p-5 rounded-3xl border transition duration-300 cursor-pointer flex flex-col justify-between ${isSelected ? 'bg-blue-50/90 border-breeze-blue shadow-md ring-2 ring-breeze-blue/30' : 'bg-white border-slate-200 hover:border-blue-300 shadow-sm'}`}
+                                                >
+                                                    <div>
+                                                        <div class="flex items-center justify-between mb-2">
+                                                            <div class="flex items-center gap-2">
+                                                                <span class={`px-2.5 py-1 text-[11px] font-bold text-white rounded-full ${loc.type === 'BOOTH' ? 'bg-breeze-pink' : 'bg-breeze-blue'}`}>
+                                                                    {loc.type === 'BOOTH' ? 'บูธกิจกรรม' : 'ตู้กดสินค้า'}
+                                                                </span>
+                                                                <span class={`text-xs font-semibold ${loc.status === 'ACTIVE' ? 'text-emerald-600' : 'text-amber-600'}`}>
+                                                                    ● {loc.status === 'ACTIVE' ? 'กำลังเปิดบริการ' : 'เร็วๆ นี้'}
+                                                                </span>
+                                                            </div>
+
+                                                            {loc.isDemo && (
+                                                                <span class="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded border border-amber-200" title="ตำแหน่งตัวอย่างสาธิต">
+                                                                    DEMO
+                                                                </span>
+                                                            )}
+                                                        </div>
+
+                                                        <h3 class="font-bold text-slate-800 text-base mb-1">{loc.name}</h3>
+                                                        <p class="text-xs text-slate-600 mb-2 leading-relaxed">{loc.address}</p>
+
+                                                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 mb-3">
+                                                            <span><i class="fa-regular fa-clock text-breeze-blue mr-1"></i> {loc.time}</span>
+                                                            {loc.distance && (
+                                                                <span class="font-bold text-breeze-blue"><i class="fa-solid fa-route mr-1"></i> ห่าง {loc.distance} กม.</span>
+                                                            )}
+                                                        </div>
+
+                                                        {loc.note && (
+                                                            <p class="text-xs bg-slate-50 p-2.5 rounded-xl text-slate-600 border border-slate-200/80 mb-3">
+                                                                <i class="fa-solid fa-gift text-breeze-pink mr-1.5"></i> {loc.note}
+                                                            </p>
+                                                        )}
+                                                    </div>
+
+                                                    <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
+                                                        <a 
+                                                            href={`https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}`}
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer"
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            class="flex-1 py-2 bg-breeze-blue hover:bg-blue-700 text-white rounded-xl text-xs font-bold text-center transition flex items-center justify-center gap-1.5"
+                                                        >
+                                                            <i class="fa-solid fa-diamond-turn-right"></i> นำทางด้วย Google Maps
+                                                        </a>
+                                                        <button 
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleShareLocation(loc);
+                                                            }}
+                                                            class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition"
+                                                            title="แชร์พิกัด"
+                                                        >
+                                                            <i class="fa-solid fa-share-nodes"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </section>
+
+                    {/* Events & Campaigns */}
+                    <section id="events" class="py-20 bg-gradient-to-b from-blue-900 to-breeze-dark text-white relative overflow-hidden">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+                                <div class="lg:col-span-7 space-y-4">
+                                    <span class="text-xs font-bold text-breeze-cyan tracking-widest uppercase bg-cyan-950/80 px-4 py-1.5 rounded-full border border-cyan-800">
+                                        SPECIAL CAMPAIGN & ACTIVITIES
+                                    </span>
+                                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white">
+                                        ร่วมสนุกรับคูปองส่วนลด & <br />
+                                        <span class="text-breeze-pink">ของแถมทดลองซักฟรี!</span>
+                                    </h2>
+                                    <p class="text-slate-300 text-base leading-relaxed">
+                                        ถ่ายรูปคู่กับ Breeze Mascot ที่บูธกิจกรรม หรือสแกน QR Code หน้าตู้กดสินค้า เพื่อรับสิทธิ์ร่วมสนุกและรับส่วนลดทันที
+                                    </p>
+                                    
+                                    <div class="pt-4">
+                                        <button 
+                                            onClick={() => {
+                                                setVoucherModal(true);
+                                                handleSpinVoucher();
+                                            }}
+                                            class="px-8 py-4 bg-gradient-to-r from-breeze-pink to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-xl transition transform hover:scale-105 flex items-center gap-3 text-base"
+                                        >
+                                            <i class="fa-solid fa-ticket text-xl"></i>
+                                            <span>สุ่มรับคูปองส่วนลดพิเศษ</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="lg:col-span-5 flex justify-center">
+                                    <div class="relative bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/20 text-center max-w-sm">
+                                        <img src="image_3e5f37.jpg" alt="Mascot Game" class="h-56 mx-auto object-contain mascot-shadow mb-4" />
+                                        <h3 class="font-bold text-lg text-white mb-1">Breeze Clean & Fun Mascot</h3>
+                                        <p class="text-xs text-slate-300">พบกับมาสคอต Breeze ได้ตามจุดบูธกิจกรรมหลักทั่วกรุงเทพฯ!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Voucher Modal */}
+                    {voucherModal && (
+                        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
+                            <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center relative border border-pink-100 shadow-2xl">
+                                <button 
+                                    onClick={() => setVoucherModal(false)} 
+                                    class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"
+                                >
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+
+                                <div class="w-16 h-16 bg-pink-100 text-breeze-pink rounded-full flex items-center justify-center mx-auto text-2xl mb-4">
+                                    <i class="fa-solid fa-gift"></i>
+                                </div>
+
+                                <h3 class="text-2xl font-extrabold text-slate-900 mb-2">ยินดีด้วย! คุณได้รับคูปอง</h3>
+                                
+                                {claimedVoucher && (
+                                    <div class="bg-gradient-to-r from-pink-50 to-blue-50 p-6 rounded-2xl border border-dashed border-breeze-pink my-4">
+                                        <span class="text-xs font-bold text-breeze-pink uppercase tracking-widest">PROMO CODE</span>
+                                        <div class="text-2xl font-black text-slate-800 my-2 tracking-wider">{claimedVoucher.code}</div>
+                                        <p class="text-xs text-slate-600">{claimedVoucher.title}</p>
+                                    </div>
+                                )}
+
+                                <p class="text-xs text-slate-500 mb-6">
+                                    แคปหน้าจอนี้เพื่อนำไปแสดงที่บูธกิจกรรมหรือกรอกรหัสที่ตู้กด Breeze Vending Machine
+                                </p>
+
+                                <button 
+                                    onClick={() => {
+                                        showToast('คัดลอกรหัสคูปองเรียบร้อยแล้ว!');
+                                        setVoucherModal(false);
+                                    }}
+                                    class="w-full py-3 bg-breeze-blue hover:bg-blue-700 text-white font-bold rounded-2xl shadow transition"
+                                >
+                                    คัดลอกรหัสและปิดหน้าต่าง
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Where to Buy */}
+                    <section id="where-to-buy" class="py-20 bg-white">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                                <span class="text-xs font-bold text-breeze-blue tracking-widest uppercase bg-blue-50 px-4 py-1.5 rounded-full border border-blue-200">
+                                    OFFICIAL STORES
+                                </span>
+                                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                                    ช่องทางจำหน่ายทางการ
+                                </h2>
+                                <p class="text-slate-600 text-base">
+                                    สั่งซื้อ Breeze Capsules 5in1 สะดวกง่ายดายผ่านร้านค้าออนไลน์และซูเปอร์มาร์เก็ตชั้นนำ
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+                                <a href="https://shopee.co.th" target="_blank" rel="noopener noreferrer" class="p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-orange-400 hover:shadow-lg transition duration-300 text-center flex flex-col items-center justify-center group">
+                                    <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-bag-shopping"></i>
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-sm">Shopee Mall</span>
+                                    <span class="text-[11px] text-slate-500 mt-1">Unilever Official</span>
+                                </a>
+
+                                <a href="https://www.lazada.co.th" target="_blank" rel="noopener noreferrer" class="p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-blue-400 hover:shadow-lg transition duration-300 text-center flex flex-col items-center justify-center group">
+                                    <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-sm">Lazada LazMall</span>
+                                    <span class="text-[11px] text-slate-500 mt-1">Unilever Official</span>
+                                </a>
+
+                                <a href="https://www.bigc.co.th" target="_blank" rel="noopener noreferrer" class="p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-red-400 hover:shadow-lg transition duration-300 text-center flex flex-col items-center justify-center group">
+                                    <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-store"></i>
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-sm">Big C Online</span>
+                                    <span class="text-[11px] text-slate-500 mt-1">ซื้อออนไลน์ส่งถึงบ้าน</span>
+                                </a>
+
+                                <a href="https://www.lotuss.com" target="_blank" rel="noopener noreferrer" class="p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-emerald-400 hover:shadow-lg transition duration-300 text-center flex flex-col items-center justify-center group">
+                                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-basket-shopping"></i>
+                                    </div>
+                                    <span class="font-bold text-slate-800 text-sm">Lotus's</span>
+                                    <span class="text-[11px] text-slate-500 mt-1">โลตัส ช้อปออนไลน์</span>
+                                </a>
+
+                                <a href="#map" class="p-6 rounded-3xl bg-blue-50 border border-blue-200 hover:border-breeze-blue hover:shadow-lg transition duration-300 text-center flex flex-col items-center justify-center group">
+                                    <div class="w-12 h-12 rounded-2xl bg-breeze-blue text-white flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-robot"></i>
+                                    </div>
+                                    <span class="font-bold text-breeze-blue text-sm">Breeze Vending</span>
+                                    <span class="text-[11px] text-breeze-blue/80 mt-1">ตู้กดอัตโนมัติ 24 ชม.</span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* FAQ Section */}
+                    <section id="faq" class="py-20 bg-slate-50">
+                        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center mb-16 space-y-3">
+                                <span class="text-xs font-bold text-breeze-pink tracking-widest uppercase bg-pink-50 px-4 py-1.5 rounded-full border border-pink-100">
+                                    QUESTIONS & ANSWERS
+                                </span>
+                                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                                    คำถามที่พบบ่อย (FAQ)
+                                </h2>
+                                <p class="text-slate-600 text-sm">
+                                    รวมข้อสงสัยและการใช้งาน Breeze Capsules 5in1 อย่างถูกต้อง
+                                </p>
+                            </div>
+
+                            <AccordionList />
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 border-b border-slate-800">
+                                <div class="space-y-4">
+                                    <img src="image_3e5f7d.png" alt="Breeze Logo" class="h-10 w-auto filter brightness-200" />
+                                    <p class="text-xs text-slate-400 leading-relaxed">
+                                        Breeze Capsules 5in1 นวัตกรรมแคปซูลซักผ้าสูตรเข้มข้น สะอาดลึก หอมสดชื่น ยาวนาน
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-white text-sm font-bold mb-4">เมนูหลัก</h4>
+                                    <ul class="space-y-2 text-xs">
+                                        <li><a href="#home" class="hover:text-white transition">หน้าแรก</a></li>
+                                        <li><a href="#products" class="hover:text-white transition">ผลิตภัณฑ์</a></li>
+                                        <li><a href="#map" class="hover:text-white transition">แผนที่ตู้กดสินค้า (Google Maps)</a></li>
+                                        <li><a href="#events" class="hover:text-white transition">กิจกรรมแคมเปญ</a></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-white text-sm font-bold mb-4">ข้อกำหนดและนโยบาย</h4>
+                                    <ul class="space-y-2 text-xs">
+                                        <li><a href="#" class="hover:text-white transition">เงื่อนไขการใช้งาน</a></li>
+                                        <li><a href="#" class="hover:text-white transition">นโยบายความเป็นส่วนตัว</a></li>
+                                        <li><a href="#" class="hover:text-white transition">ประกาศคุ้มครองข้อมูลส่วนบุคคล</a></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-white text-sm font-bold mb-4">ติดตาม Breeze Thailand</h4>
+                                    <div class="flex gap-3 text-lg">
+                                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-breeze-blue text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>
+                                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-breeze-pink text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
+                                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-red-600 text-white flex items-center justify-center transition"><i class="fa-brands fa-youtube"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-8 text-center text-xs text-slate-500">
+                                © 2026 Breeze Thailand — All Rights Reserved. Breeze Capsules 5in1 Official Campaign Website. Powered by Google Maps Platform.
+                            </div>
+                        </div>
+                    </footer>
+
+                </div>
+            );
+        };
+
+        const AccordionList = () => {
+            const [openIndex, setOpenIndex] = React.useState(0);
+
+            const faqs = [
+                {
+                    q: 'แคปซูลซักผ้า Breeze Capsules 5in1 ใช้งานอย่างไร?',
+                    a: 'ใส่แคปซูลซักผ้า Breeze 1 แคปซูล ลงไปในถังซักผ้าเป็นอันดับแรก ก่อนใส่เสื้อผ้าตามลงไป สามารถใช้ได้กับทั้งเครื่องซักผ้าฝาบนและฝาหน้า (1 แคปซูล เหมาะสำหรับผ้า 15-28 ชิ้น)'
+                },
+                {
+                    q: 'ฟิล์มของแคปซูลจะละลายหมดหรือไม่? จะทิ้งคราบเกาะเสื้อผ้าไหม?',
+                    a: 'ฟิล์มของ Breeze Capsules ผลิตจากเทคโนโลยีที่สามารถละลายน้ำได้ 100% อย่างรวดเร็ว ไม่ทิ้งสารตกค้างเกาะติดเสื้อผ้าหรือถังซักผ้าอย่างแน่นอน'
+                },
+                {
+                    q: 'จะค้นหา Breeze Vending Machine ตู้กดสินค้าผ่าน Google Maps ได้อย่างไร?',
+                    a: 'คุณสามารถค้นหาพิกัดตู้กดสินค้าและบูธได้บน Google Maps ภายในส่วน "แผนที่กิจกรรม" ของเว็บไซต์นี้ โดยสามารถใช้ปุ่ม "ค้นหาจุดใกล้ฉัน" หรือค้นหาชื่อย่าน/เขต เพื่อคำนวณระยะห่าง พร้อมกดปุ่ม "นำทางด้วย Google Maps" เพื่อรับเส้นทางจริงได้ทันที'
+                },
+                {
+                    q: 'ทั้ง 2 สูตรมีความแตกต่างกันอย่างไร?',
+                    a: 'สูตร Clean & Fresh (ถุงสีชมพู) โดดเด่นเรื่องกลิ่นหอมสดชื่นละมุนจากดอกไม้ยาวนาน ส่วนสูตร Clean & Hygiene (ถุงสีฟ้า/เขียว) เน้นการลดกลิ่นอับชื้น ปกป้องผ้า และทำความสะอาดถูกสุขอนามัย'
+                },
+                {
+                    q: 'ข้อควรระวังในการเก็บรักษา Breeze Capsules มีอะไรบ้าง?',
+                    a: 'ควรเก็บในที่แห้ง พ้นจากแสงแดดและความชื้น ปิดซิปล็อคถุงให้สนิททุกครั้งหลังใช้งาน และเก็บให้พ้นมือเด็กและสัตว์เลี้ยง ห้ามรับประทานหรือจับแคปซูลด้วยมือที่เปียกชื้น'
+                }
+            ];
+
+            return (
+                <div class="space-y-4">
+                    {faqs.map((faq, index) => {
+                        const isOpen = openIndex === index;
+                        return (
+                            <div 
+                                key={index} 
+                                class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm transition"
+                            >
+                                <button 
+                                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                                    class="w-full text-left p-5 font-bold text-slate-800 text-sm sm:text-base flex items-center justify-between gap-4 focus:outline-none"
+                                >
+                                    <span>{faq.q}</span>
+                                    <i class={`fa-solid fa-chevron-down transition-transform duration-300 text-breeze-blue ${isOpen ? 'rotate-180' : ''}`}></i>
+                                </button>
+
+                                {isOpen && (
+                                    <div class="p-5 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/50">
+                                        {faq.a}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
